@@ -427,13 +427,13 @@
 
             // 按钮事件绑定
             // formatBtn.addEventListener("click", parseJSON);
-            // clearBtn.addEventListener("click", () => {
-            //     jsonInput.value = "";
-            //     jsonOutput.innerHTML = "";
-            //     errorMessage.style.display = "none";
-            //     resetStats();
-            //     updateJsonSize();
-            // });
+            clearBtn.addEventListener("click", () => {
+                jsonInput.value = "";
+                jsonOutput.innerHTML = "";
+                errorMessage.style.display = "none";
+                resetStats();
+                updateJsonSize();
+            });
 
             expandBtn.addEventListener("click", () => {
                 expandAll();
