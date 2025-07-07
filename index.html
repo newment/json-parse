@@ -18,8 +18,8 @@
 
             body {
                 font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
-                background: linear-gradient(135deg, #ffffff, #00f8b1, #ffffff);
-                color: #333;
+                background: linear-gradient(135deg, #e8f5f0, #f0e6f6, #e6f7ff);
+                color: #2d3436;
                 min-height: 100vh;
                 padding: 20px;
             }
@@ -62,9 +62,9 @@
 
             .panel {
                 flex: 1;
-                background: white;
+                background: #ffffffdd;
                 border-radius: 12px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
                 overflow: hidden;
                 display: flex;
                 flex-direction: column;
@@ -104,9 +104,9 @@
             }
 
             .btn:hover {
-                background: #2980b9;
+                background: #2874a6;
                 transform: translateY(-2px);
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 4px 12px rgba(44, 102, 157, 0.3);
             }
 
             .btn-danger {
@@ -130,6 +130,7 @@
                 padding: 20px;
                 overflow: auto;
                 position: relative;
+                background: #fbfbfb99;
             }
 
             #json-input {
@@ -153,10 +154,10 @@
             }
 
             #json-output {
-                min-height: 500px;
-                font-family: "Consolas", "Courier New", monospace;
-                font-size: 15px;
-                line-height: 1.5;
+                font-family: "Fira Code", "JetBrains Mono", "Consolas", "Courier New", monospace;
+                font-size: 17px;
+                line-height: 1.4;
+                font-weight: bolder;
             }
 
             .json-tree {
@@ -164,10 +165,12 @@
             }
 
             .json-item {
-                margin: 8px 0;
+                margin: 2px 0; /* 减小外边距 */
                 position: relative;
+                background: #f5f5f5cc;
+                border-radius: 6px;
+                padding: 1px 4px; /* 减小内边距 */
             }
-
             .json-toggle {
                 position: absolute;
                 left: -20px;
@@ -247,12 +250,13 @@
             }
 
             .error {
-                color: #e74c3c;
+                color: #c0392b;
                 font-weight: bold;
-                padding: 10px;
-                background: #fadbd8;
-                border-radius: 6px;
-                margin-top: 10px;
+                padding: 12px;
+                background: #ffe6e6;
+                border-radius: 8px;
+                margin-top: 12px;
+                border-left: 4px solid #e74c3c;
             }
 
             .footer {
@@ -268,12 +272,12 @@
                 gap: 15px;
                 margin-top: 15px;
                 justify-content: center;
-                color: rgba(255, 255, 255, 0.85);
+                color: #3a3a3a;
                 font-size: 0.9rem;
             }
 
             .stat-item {
-                background: rgba(255, 255, 255, 0.1);
+                background: rgba(255, 255, 255, 0.3);
                 padding: 8px 15px;
                 border-radius: 20px;
                 display: flex;
@@ -305,16 +309,15 @@
                 position: fixed;
                 top: 20px;
                 right: 20px;
-                background: #2ecc71;
+                background: #28a745;
                 color: white;
                 padding: 15px 25px;
                 border-radius: 8px;
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
                 transform: translateX(200%);
                 transition: transform 0.3s ease;
                 z-index: 1000;
             }
-
             .notification.show {
                 transform: translateX(0);
             }
