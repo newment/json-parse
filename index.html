@@ -299,8 +299,9 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 14px;
-            height: 14px;
+            width: 24px;
+            height: 24px;
+            color: #00CFE8;
             border-radius: 3px;
             border: none;
             background: transparent;
@@ -313,7 +314,7 @@
         }
 
         .json-toggle svg {
-            color: #9e9e9e;
+            color: #00CFE8;
             transition: color 0.2s ease;
         }
 
@@ -322,15 +323,15 @@
         }
 
         .json-toggle:hover svg {
-            color: #667eea;
+            color: #00b8d4;
         }
 
         .json-toggle.expanded svg {
-            color: #667eea;
+            color: #EA5455;
         }
 
         .json-toggle.expanded:hover svg {
-            color: #764ba2;
+            color: #d73a3a;
         }
 
         .json-collapse-indicator {
@@ -462,8 +463,8 @@
                 }
                 
                 const toggleIcon = isCollapsed 
-                    ? '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>'
-                    : '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="8" y1="12" x2="16" y2="12"></line></svg>';
+                    ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="6" ry="6"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>'
+                    : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="6" ry="6"></rect><line x1="8" y1="12" x2="16" y2="12"></line></svg>';
                 html += `<span class="json-toggle ${isCollapsed ? '' : 'expanded'}" data-line-id="${lineId}" onclick="toggleNode('${lineId}', this)">${toggleIcon}</span>`;
                 if (isCollapsed) {
                     html += `<span class="json-collapse-indicator" data-line-id="${lineId}" onclick="toggleNode('${lineId}', this.parentElement.querySelector('.json-toggle'))">${collapseText}</span>`;
@@ -521,7 +522,7 @@
             if (isCollapsed) {
                 childrenDiv.classList.remove('collapsed');
                 btn.classList.add('expanded');
-                btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="8" y1="12" x2="16" y2="12"></line></svg>';
+                btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="6" ry="6"></rect><line x1="8" y1="12" x2="16" y2="12"></line></svg>';
                 lineDiv.querySelector('.json-bracket').style.display = 'inline';
                 const indicator = lineDiv.querySelector('.json-collapse-indicator');
                 if (indicator) indicator.remove();
@@ -529,7 +530,7 @@
             } else {
                 childrenDiv.classList.add('collapsed');
                 btn.classList.remove('expanded');
-                btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>';
+                btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="6" ry="6"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>';
                 const bracket = lineDiv.querySelector('.json-bracket');
                 if (bracket) bracket.style.display = 'none';
                 const collapseText = lineDiv.getAttribute('data-collapse-text');
