@@ -458,320 +458,311 @@
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="sidebar-item">
-            <div class="sidebar-header">工具集</div>
-            <nav class="sidebar-nav">
-                <a class="sidebar-link" onclick="navigateTo('index.html')" data-page="index">
-                    <span class="icon">📋</span>
-                    <span class="link-text">JSON格式化</span>
-                </a>
-                <a class="sidebar-link" onclick="navigateTo('text-compare.html')" data-page="text-compare">
-                    <span class="icon">⚖️</span>
-                    <span class="link-text">文字对比</span>
-                </a>
-                <a class="sidebar-link active" onclick="navigateTo('json-escape.html')" data-page="json-escape">
-                    <span class="icon">🔣</span>
-                    <span class="link-text">JSON转义</span>
-                </a>
-            </nav>
-        </div>
+<div class="sidebar">
+    <div class="sidebar-item">
+        <div class="sidebar-header">工具集</div>
+        <nav class="sidebar-nav">
+            <a class="sidebar-link" onclick="navigateTo('index.html')" data-page="index">
+                <span class="icon">📋</span>
+                <span class="link-text">JSON格式化</span>
+            </a>
+            <a class="sidebar-link" onclick="navigateTo('text-compare.html')" data-page="text-compare">
+                <span class="icon">⚖️</span>
+                <span class="link-text">文字对比</span>
+            </a>
+            <a class="sidebar-link active" onclick="navigateTo('json-escape.html')" data-page="json-escape">
+                <span class="icon">🔣</span>
+                <span class="link-text">JSON转义</span>
+            </a>
+        </nav>
+    </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🔣 JSON转义与压缩</h1>
     </div>
 
-    <div class="container">
-        <div class="header">
-            <h1>🔣 JSON转义与压缩</h1>
-        </div>
-
-        <div class="main-content">
-            <div class="panel-wrapper">
-                <div class="panel panel-left">
-                    <div class="panel-title">
-                        输入
-                        <span id="errorHint" style="color: #EA5455; font-size: 12px; font-weight: normal; margin-left: 8px; display: none;"></span>
-                        <span id="successHint" style="color: #4caf50; font-size: 12px; font-weight: normal; margin-left: 8px; display: none;"></span>
-                    </div>
-                    <button class="btn-clear" onclick="clearInput()" title="清空">✕</button>
-                    <button class="btn-copy" onclick="copyInput()" title="复制">📋</button>
-                    <textarea 
-                        id="jsonInput" 
+    <div class="main-content">
+        <div class="panel-wrapper">
+            <div class="panel panel-left">
+                <div class="panel-title">
+                    输入
+                    <span id="errorHint"
+                          style="color: #EA5455; font-size: 12px; font-weight: normal; margin-left: 8px; display: none;"></span>
+                    <span id="successHint"
+                          style="color: #4caf50; font-size: 12px; font-weight: normal; margin-left: 8px; display: none;"></span>
+                </div>
+                <button class="btn-clear" onclick="clearInput()" title="清空">✕</button>
+                <button class="btn-copy" onclick="copyInput()" title="复制">📋</button>
+                <textarea
+                        id="jsonInput"
                         class="text-input"
-                        placeholder="请输入JSON文本或普通文本...
-
-示例1 - JSON压缩：
-{
-    "name": "张三",
-    "age": 25
-}
-
-示例2 - JSON转义：
-这是一段包含特殊字符的文本
-
-示例3 - JSON去转义：
-\u8fd9\u662f\u4e00\u6bb5"
-                    ></textarea>
-                </div>
-
-                <div class="panel">
-                    <div class="panel-title">
-                        输出
-                        <span id="infoBar" class="info-bar" style="display: none; margin-left: 8px; border: none; padding: 0; background: none; font-size: 12px;"></span>
-                    </div>
-                    <button class="btn-copy" onclick="copyOutput()" title="复制结果">📋</button>
-                    <div id="outputContainer">
-                        <div class="empty-state">
-                            <div class="empty-state-icon">📦</div>
-                            <p>请在左侧输入内容<br>选择相应功能按钮进行处理</p>
-                        </div>
-                    </div>
-                </div>
+                        placeholder="请输入JSON文本或普通文本..."
+                ></textarea>
             </div>
-        </div>
 
-        <div style="padding: 12px; border-top: 1px solid #e0e0e0; flex-shrink: 0;">
-            <div class="button-group">
-                <button class="btn btn-primary" onclick="compressJSON()">
-                    <span>📦</span> 压缩JSON
-                </button>
-                <button class="btn btn-success" onclick="escapeJSON()">
-                    <span>🔒</span> 转义文本
-                </button>
-                <button class="btn btn-secondary" onclick="unescapeJSON()">
-                    <span>🔓</span> 去转义
-                </button>
-                <button class="btn btn-danger" onclick="swapAndProcess()">
-                    <span>⇄</span> 交换并处理
-                </button>
+            <div class="panel">
+                <div class="panel-title">
+                    输出
+                    <span id="infoBar" class="info-bar"
+                          style="display: none; margin-left: 8px; border: none; padding: 0; background: none; font-size: 12px;"></span>
+                </div>
+                <button class="btn-copy" onclick="copyOutput()" title="复制结果">📋</button>
+                <div id="outputContainer">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📦</div>
+                        <p>请在左侧输入内容<br>选择相应功能按钮进行处理</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <script>
-        function navigateTo(page) {
-            window.location.href = page;
-        }
+    <div style="padding: 12px; border-top: 1px solid #e0e0e0; flex-shrink: 0;">
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="compressJSON()">
+                <span>📦</span> 压缩JSON
+            </button>
+            <button class="btn btn-success" onclick="escapeJSON()">
+                <span>🔒</span> 转义文本
+            </button>
+            <button class="btn btn-secondary" onclick="unescapeJSON()">
+                <span>🔓</span> 去转义
+            </button>
+            <button class="btn btn-danger" onclick="swapAndProcess()">
+                <span>⇄</span> 交换并处理
+            </button>
+        </div>
+    </div>
+</div>
 
-        function setActiveTab() {
-            const currentPage = window.location.pathname.split('/').pop() || 'json-escape.html';
-            const links = document.querySelectorAll('.sidebar-link');
-            links.forEach(link => {
-                const linkPage = link.getAttribute('data-page') + '.html';
-                if (linkPage === currentPage) {
-                    link.classList.add('active');
-                } else {
-                    link.classList.remove('active');
-                }
-            });
-        }
+<script>
+    function navigateTo(page) {
+        window.location.href = page;
+    }
 
-        document.addEventListener('DOMContentLoaded', setActiveTab);
+    function setActiveTab() {
+        const currentPage = window.location.pathname.split('/').pop() || 'json-escape.html';
+        const links = document.querySelectorAll('.sidebar-link');
+        links.forEach(link => {
+            const linkPage = link.getAttribute('data-page') + '.html';
+            if (linkPage === currentPage) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
 
-        function escapeHtml(str) {
-            if (str === null || str === undefined) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;');
-        }
+    document.addEventListener('DOMContentLoaded', setActiveTab);
 
-        function showError(message) {
-            const errorHint = document.getElementById('errorHint');
-            const successHint = document.getElementById('successHint');
-            const outputContainer = document.getElementById('outputContainer');
-            const infoBar = document.getElementById('infoBar');
-            
-            errorHint.textContent = message;
-            errorHint.style.display = 'inline';
-            successHint.style.display = 'none';
-            infoBar.style.display = 'none';
-            
-            outputContainer.innerHTML = `
+    function escapeHtml(str) {
+        if (str === null || str === undefined) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    function showError(message) {
+        const errorHint = document.getElementById('errorHint');
+        const successHint = document.getElementById('successHint');
+        const outputContainer = document.getElementById('outputContainer');
+        const infoBar = document.getElementById('infoBar');
+
+        errorHint.textContent = message;
+        errorHint.style.display = 'inline';
+        successHint.style.display = 'none';
+        infoBar.style.display = 'none';
+
+        outputContainer.innerHTML = `
                 <div class="empty-state">
                     <div class="empty-state-icon">⚠️</div>
                     <p>处理失败<br>${escapeHtml(message)}</p>
                 </div>
             `;
-        }
+    }
 
-        function showSuccess(message) {
-            const successHint = document.getElementById('successHint');
-            const errorHint = document.getElementById('errorHint');
-            errorHint.style.display = 'none';
-            successHint.textContent = message;
-            successHint.style.display = 'inline';
-        }
+    function showSuccess(message) {
+        const successHint = document.getElementById('successHint');
+        const errorHint = document.getElementById('errorHint');
+        errorHint.style.display = 'none';
+        successHint.textContent = message;
+        successHint.style.display = 'inline';
+    }
 
-        function updateOutput(result, originalLength, resultLength) {
-            const outputContainer = document.getElementById('outputContainer');
-            const infoBar = document.getElementById('infoBar');
-            
-            outputContainer.innerHTML = `<div style="white-space: pre-wrap; word-break: break-all;">${escapeHtml(result)}</div>`;
-            
-            if (originalLength !== undefined && resultLength !== undefined) {
-                const reduction = originalLength - resultLength;
-                const percent = originalLength > 0 ? ((reduction / originalLength) * 100).toFixed(1) : 0;
-                
-                infoBar.style.display = 'inline';
-                infoBar.innerHTML = `
+    function updateOutput(result, originalLength, resultLength) {
+        const outputContainer = document.getElementById('outputContainer');
+        const infoBar = document.getElementById('infoBar');
+
+        outputContainer.innerHTML = `<div style="white-space: pre-wrap; word-break: break-all;">${escapeHtml(result)}</div>`;
+
+        if (originalLength !== undefined && resultLength !== undefined) {
+            const reduction = originalLength - resultLength;
+            const percent = originalLength > 0 ? ((reduction / originalLength) * 100).toFixed(1) : 0;
+
+            infoBar.style.display = 'inline';
+            infoBar.innerHTML = `
                     <span style="color: #666;">原始 ${originalLength} → 处理后 ${resultLength} | 减少 ${reduction} 字符 (${percent}%)</span>
                 `;
-            }
+        }
+    }
+
+    function compressJSON() {
+        const input = document.getElementById('jsonInput').value;
+        const errorHint = document.getElementById('errorHint');
+        const successHint = document.getElementById('successHint');
+
+        errorHint.style.display = 'none';
+        successHint.style.display = 'none';
+
+        if (!input.trim()) {
+            showError('请输入JSON数据');
+            return;
         }
 
-        function compressJSON() {
-            const input = document.getElementById('jsonInput').value;
-            const errorHint = document.getElementById('errorHint');
-            const successHint = document.getElementById('successHint');
-            
-            errorHint.style.display = 'none';
-            successHint.style.display = 'none';
+        try {
+            const parsed = JSON.parse(input);
+            const compressed = JSON.stringify(parsed);
 
-            if (!input.trim()) {
-                showError('请输入JSON数据');
-                return;
-            }
+            updateOutput(compressed, input.length, compressed.length);
+            successHint.textContent = '✅ JSON压缩成功！';
+            successHint.style.display = 'inline';
+        } catch (e) {
+            showError('JSON格式错误：' + e.message);
+        }
+    }
 
-            try {
-                const parsed = JSON.parse(input);
-                const compressed = JSON.stringify(parsed);
-                
-                updateOutput(compressed, input.length, compressed.length);
-                successHint.textContent = '✅ JSON压缩成功！';
-                successHint.style.display = 'inline';
-            } catch (e) {
-                showError('JSON格式错误：' + e.message);
-            }
+    function escapeJSON() {
+        const input = document.getElementById('jsonInput').value;
+        const errorHint = document.getElementById('errorHint');
+        const successHint = document.getElementById('successHint');
+
+        errorHint.style.display = 'none';
+        successHint.style.display = 'none';
+
+        if (!input.trim()) {
+            showError('请输入需要转义的文本');
+            return;
         }
 
-        function escapeJSON() {
-            const input = document.getElementById('jsonInput').value;
-            const errorHint = document.getElementById('errorHint');
-            const successHint = document.getElementById('successHint');
-            
-            errorHint.style.display = 'none';
-            successHint.style.display = 'none';
+        try {
+            const escaped = JSON.stringify(input);
+            const result = escaped.slice(1, -1);
 
-            if (!input.trim()) {
-                showError('请输入需要转义的文本');
-                return;
-            }
+            updateOutput(result, input.length, result.length);
+            successHint.textContent = '✅ 文本转义成功！';
+            successHint.style.display = 'inline';
+        } catch (e) {
+            showError('转义失败：' + e.message);
+        }
+    }
 
-            try {
-                const escaped = JSON.stringify(input);
-                const result = escaped.slice(1, -1);
-                
-                updateOutput(result, input.length, result.length);
-                successHint.textContent = '✅ 文本转义成功！';
-                successHint.style.display = 'inline';
-            } catch (e) {
-                showError('转义失败：' + e.message);
-            }
+    function unescapeJSON() {
+        const input = document.getElementById('jsonInput').value;
+        const errorHint = document.getElementById('errorHint');
+        const successHint = document.getElementById('successHint');
+
+        errorHint.style.display = 'none';
+        successHint.style.display = 'none';
+
+        if (!input.trim()) {
+            showError('请输入需要去转义的字符串');
+            return;
         }
 
-        function unescapeJSON() {
-            const input = document.getElementById('jsonInput').value;
-            const errorHint = document.getElementById('errorHint');
-            const successHint = document.getElementById('successHint');
-            
-            errorHint.style.display = 'none';
-            successHint.style.display = 'none';
+        try {
+            const wrapped = '"' + input + '"';
+            const unescaped = JSON.parse(wrapped);
 
-            if (!input.trim()) {
-                showError('请输入需要去转义的字符串');
-                return;
-            }
-
-            try {
-                const wrapped = '"' + input + '"';
-                const unescaped = JSON.parse(wrapped);
-                
-                updateOutput(unescaped, input.length, unescaped.length);
-                successHint.textContent = '✅ 去转义成功！';
-                successHint.style.display = 'inline';
-            } catch (e) {
-                showError('去转义失败：' + e.message);
-            }
+            updateOutput(unescaped, input.length, unescaped.length);
+            successHint.textContent = '✅ 去转义成功！';
+            successHint.style.display = 'inline';
+        } catch (e) {
+            showError('去转义失败：' + e.message);
         }
+    }
 
-        function swapAndProcess() {
-            const input = document.getElementById('jsonInput').value;
-            const output = document.getElementById('outputContainer').textContent;
-            
-            if (output && !output.includes('请在左侧输入') && !output.includes('处理失败')) {
-                document.getElementById('jsonInput').value = output;
-                
-                const infoBar = document.getElementById('infoBar');
-                if (infoBar.style.display !== 'none') {
-                    compressJSON();
-                } else {
-                    unescapeJSON();
-                }
+    function swapAndProcess() {
+        const input = document.getElementById('jsonInput').value;
+        const output = document.getElementById('outputContainer').textContent;
+
+        if (output && !output.includes('请在左侧输入') && !output.includes('处理失败')) {
+            document.getElementById('jsonInput').value = output;
+
+            const infoBar = document.getElementById('infoBar');
+            if (infoBar.style.display !== 'none') {
+                compressJSON();
             } else {
-                showError('没有可交换的输出内容');
+                unescapeJSON();
             }
+        } else {
+            showError('没有可交换的输出内容');
         }
+    }
 
-        function clearInput() {
-            document.getElementById('jsonInput').value = '';
-            document.getElementById('outputContainer').innerHTML = `
+    function clearInput() {
+        document.getElementById('jsonInput').value = '';
+        document.getElementById('outputContainer').innerHTML = `
                 <div class="empty-state">
                     <div class="empty-state-icon">📦</div>
                     <p>请在左侧输入内容<br>选择相应功能按钮进行处理</p>
                 </div>
             `;
-            document.getElementById('infoBar').style.display = 'none';
-            document.getElementById('errorHint').style.display = 'none';
-            document.getElementById('successHint').style.display = 'none';
+        document.getElementById('infoBar').style.display = 'none';
+        document.getElementById('errorHint').style.display = 'none';
+        document.getElementById('successHint').style.display = 'none';
+    }
+
+    function copyInput() {
+        const text = document.getElementById('jsonInput').value;
+
+        if (!text) {
+            showError('没有可复制的内容');
+            return;
         }
 
-        function copyInput() {
-            const text = document.getElementById('jsonInput').value;
-            
-            if (!text) {
-                showError('没有可复制的内容');
-                return;
-            }
-            
-            navigator.clipboard.writeText(text).then(() => {
-                showSuccess('已复制到剪贴板');
-            }).catch(err => {
-                showError('复制失败：' + err.message);
-            });
-        }
-
-        function copyOutput() {
-            const output = document.getElementById('outputContainer').textContent;
-            
-            if (!output || output.includes('请在左侧输入') || output.includes('处理失败')) {
-                showError('没有可复制的结果');
-                return;
-            }
-            
-            navigator.clipboard.writeText(output).then(() => {
-                showSuccess('结果已复制到剪贴板');
-            }).catch(err => {
-                showError('复制失败：' + err.message);
-            });
-        }
-
-        let debounceTimer;
-        document.getElementById('jsonInput').addEventListener('input', function() {
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(function() {
-                if (document.getElementById('jsonInput').value.trim()) {
-                    try {
-                        const parsed = JSON.parse(document.getElementById('jsonInput').value);
-                        const compressed = JSON.stringify(parsed);
-                        updateOutput(compressed, document.getElementById('jsonInput').value.length, compressed.length);
-                        document.getElementById('errorHint').style.display = 'none';
-                        document.getElementById('successHint').style.display = 'none';
-                    } catch (e) {
-                        // Not valid JSON, do nothing
-                    }
-                }
-            }, 500);
+        navigator.clipboard.writeText(text).then(() => {
+            showSuccess('已复制到剪贴板');
+        }).catch(err => {
+            showError('复制失败：' + err.message);
         });
-    </script>
+    }
+
+    function copyOutput() {
+        const output = document.getElementById('outputContainer').textContent;
+
+        if (!output || output.includes('请在左侧输入') || output.includes('处理失败')) {
+            showError('没有可复制的结果');
+            return;
+        }
+
+        navigator.clipboard.writeText(output).then(() => {
+            showSuccess('结果已复制到剪贴板');
+        }).catch(err => {
+            showError('复制失败：' + err.message);
+        });
+    }
+
+    let debounceTimer;
+    document.getElementById('jsonInput').addEventListener('input', function () {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(function () {
+            if (document.getElementById('jsonInput').value.trim()) {
+                try {
+                    const parsed = JSON.parse(document.getElementById('jsonInput').value);
+                    const compressed = JSON.stringify(parsed);
+                    updateOutput(compressed, document.getElementById('jsonInput').value.length, compressed.length);
+                    document.getElementById('errorHint').style.display = 'none';
+                    document.getElementById('successHint').style.display = 'none';
+                } catch (e) {
+                    // Not valid JSON, do nothing
+                }
+            }
+        }, 500);
+    });
+</script>
 </body>
 </html>
