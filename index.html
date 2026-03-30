@@ -14,21 +14,134 @@
             box-sizing: border-box;
         }
 
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
         body {
             font-family: "Public Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: #f5f5f5;
-            min-height: 100vh;
             padding: 10px;
+            display: flex;
+            gap: 10px;
+            box-sizing: border-box;
+        }
+
+        .sidebar {
+            width: 140px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-item {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-header {
+            background: #667eea;
+            color: white;
+            padding: 10px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            font-size: 13px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-link:hover {
+            background: #f5f5f5;
+            color: #667eea;
+        }
+
+        .sidebar-link.active {
+            background: #f0f4ff;
+            border-left-color: #667eea;
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .sidebar-link .icon {
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                padding: 0;
+            }
+
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                padding: 8px;
+            }
+
+            .sidebar-item {
+                flex: 1;
+            }
+
+            .sidebar-header {
+                display: none;
+            }
+
+            .sidebar-nav {
+                flex-direction: row;
+            }
+
+            .sidebar-link {
+                flex: 1;
+                justify-content: center;
+                padding: 10px;
+                font-size: 12px;
+                border-left: none;
+                border-bottom: 2px solid transparent;
+            }
+
+            .sidebar-link.active {
+                border-left: none;
+                border-bottom-color: #667eea;
+            }
+
+            .sidebar-link .link-text {
+                display: none;
+            }
         }
 
         .container {
-            max-width: 1400px;
+            flex: 1;
+            max-width: calc(100vw - 180px);
             margin: 0 auto;
             background: white;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            overflow: auto;
+            overflow: hidden;
             max-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .header {
@@ -36,6 +149,7 @@
             color: white;
             padding: 12px 20px;
             text-align: center;
+            flex-shrink: 0;
         }
 
         .header h1 {
@@ -49,14 +163,23 @@
         }
 
         .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        .panel-wrapper {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0;
-            min-height: 300px;
+            flex: 1;
+            overflow: hidden;
+            min-height: 0;
         }
 
         @media (max-width: 968px) {
-            .main-content {
+            .panel-wrapper {
                 grid-template-columns: 1fr;
             }
         }
@@ -66,8 +189,7 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            overflow: auto;
-            min-height: 0;
+            overflow: hidden;
         }
 
         .panel-left {
@@ -89,6 +211,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            flex-shrink: 0;
         }
 
         .panel-title::before {
@@ -100,9 +223,9 @@
         }
 
         #jsonInput {
-            flex: 1;
             width: 100%;
             min-width: 0;
+            height: 100%;
             padding: 10px;
             border: 1px solid #e0e0e0;
             border-radius: 6px;
@@ -110,7 +233,6 @@
             font-size: 13px;
             resize: none;
             transition: border-color 0.3s ease;
-            min-height: 200px;
             overflow: auto;
         }
 
@@ -201,6 +323,7 @@
 
         #outputContainer {
             flex: 1;
+            height: 100%;
             overflow: auto;
             background: #f9f9f9;
             border-radius: 8px;
@@ -208,32 +331,18 @@
             border: 2px solid #e0e0e0;
             min-width: 0;
             max-width: 100%;
+            box-sizing: border-box;
         }
 
-        .error-message {
-            background: #fee;
-            border: 1px solid #fcc;
-            color: #c00;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 10px;
-            display: none;
-            animation: slideIn 0.3s ease;
+        .empty-state {
+            text-align: center;
+            color: #999;
+            padding: 60px 20px;
         }
 
-        .error-message.show {
-            display: block;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
         }
 
         /* JSON Formatter Styles */
@@ -348,47 +457,45 @@
         .json-collapse-indicator:hover {
             color: #667eea;
         }
-
-        .empty-state {
-            text-align: center;
-            color: #999;
-            padding: 60px 20px;
-        }
-
-        .empty-state-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-
-        .success-hint {
-            margin-top: 10px;
-            padding: 10px;
-            background: #e8f5e9;
-            border: 1px solid #c8e6c9;
-            color: #2e7d32;
-            border-radius: 6px;
-            font-size: 13px;
-            display: none;
-        }
-
-        .success-hint.show {
-            display: block;
-        }
     </style>
 </head>
 <body>
+    <div class="sidebar">
+        <div class="sidebar-item">
+            <div class="sidebar-header">工具集</div>
+            <nav class="sidebar-nav">
+                <a class="sidebar-link active" onclick="navigateTo('index.html')" data-page="index">
+                    <span class="icon">📋</span>
+                    <span class="link-text">JSON格式化</span>
+                </a>
+                <a class="sidebar-link" onclick="navigateTo('text-compare.html')" data-page="text-compare">
+                    <span class="icon">⚖️</span>
+                    <span class="link-text">文字对比</span>
+                </a>
+                <a class="sidebar-link" onclick="navigateTo('json-escape.html')" data-page="json-escape">
+                    <span class="icon">🔣</span>
+                    <span class="link-text">JSON转义</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
     <div class="container">
         <div class="header">
             <h1>🔍 JSON 解析器</h1>
         </div>
 
         <div class="main-content">
-            <div class="panel panel-left">
-                <div class="panel-title">JSON 输入</div>
-                <button class="btn-clear" onclick="clearAll()" title="清空">✕</button>
-                <textarea 
-                    id="jsonInput" 
-                    placeholder='请输入 JSON数据，例如：
+            <div class="panel-wrapper">
+                <div class="panel panel-left">
+                    <div class="panel-title">
+                        JSON 输入
+                        <span id="errorHint" style="color: #EA5455; font-size: 12px; font-weight: normal; margin-left: 8px; display: none;"></span>
+                    </div>
+                    <button class="btn-clear" onclick="clearAll()" title="清空">✕</button>
+                    <textarea 
+                        id="jsonInput" 
+                        placeholder='请输入 JSON数据，例如：
 {
   "name": "张三",
   "age": 25,
@@ -400,18 +507,20 @@
   "isActive": true,
   "salary": null
 }'
-                ></textarea>
-                <div id="errorMessage" class="error-message"></div>
-                <div id="successHint" class="success-hint"></div>
-            </div>
+                    ></textarea>
+                </div>
 
-            <div class="panel">
-                <div class="panel-title">解析结果</div>
-                <button class="btn-copy" onclick="copyJSON()" title="复制">📋</button>
-                <div id="outputContainer">
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📋</div>
-                        <p>请在左侧输入 JSON数据</p>
+                <div class="panel">
+                    <div class="panel-title">
+                        解析结果
+                        <span id="successHint" style="color: #4caf50; font-size: 12px; font-weight: normal; margin-left: 8px; display: none;"></span>
+                    </div>
+                    <button class="btn-copy" onclick="copyJSON()" title="复制">📋</button>
+                    <div id="outputContainer">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📋</div>
+                            <p>请在左侧输入 JSON数据</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -422,6 +531,25 @@
         let collapsedNodes = new Set();
         let nodeIdCounter = 0;
         let parsedJSONData = null;
+
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+
+        function setActiveTab() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const links = document.querySelectorAll('.sidebar-link');
+            links.forEach(link => {
+                const linkPage = link.getAttribute('data-page') + '.html';
+                if (linkPage === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', setActiveTab);
 
         function getType(value) {
             if (value === null) return 'null';
@@ -548,12 +676,12 @@
 
         function parseJSON() {
             const input = document.getElementById('jsonInput').value.trim();
-            const errorMessage = document.getElementById('errorMessage');
+            const errorHint = document.getElementById('errorHint');
             const outputContainer = document.getElementById('outputContainer');
             const successHint = document.getElementById('successHint');
 
-            errorMessage.classList.remove('show');
-            successHint.classList.remove('show');
+            errorHint.style.display = 'none';
+            successHint.style.display = 'none';
             collapsedNodes.clear();
             nodeIdCounter = 0;
 
@@ -566,7 +694,8 @@
                 const parsed = JSON.parse(input);
                 parsedJSONData = parsed;
                 renderJSON(parsed);
-                showSuccess(`✅ 解析成功！数据类型：${getType(parsed) === 'array' ? '数组' : '对象'}`);
+                successHint.textContent = `✅ 解析成功！数据类型：${getType(parsed) === 'array' ? '数组' : '对象'}`;
+                successHint.style.display = 'inline';
             } catch (e) {
                 showError(`❌ JSON 格式错误：${e.message}`);
                 outputContainer.innerHTML = `
@@ -598,15 +727,9 @@
         }
 
         function showError(message) {
-            const errorMessage = document.getElementById('errorMessage');
-            errorMessage.textContent = message;
-            errorMessage.classList.add('show');
-        }
-
-        function showSuccess(message) {
-            const successHint = document.getElementById('successHint');
-            successHint.textContent = message;
-            successHint.classList.add('show');
+            const errorHint = document.getElementById('errorHint');
+            errorHint.textContent = message;
+            errorHint.style.display = 'inline';
         }
 
         function copyJSON() {
@@ -618,7 +741,12 @@
             const formattedJSON = JSON.stringify(parsedJSONData, null, 2);
             
             navigator.clipboard.writeText(formattedJSON).then(() => {
-                showSuccess('✅ 已复制到剪贴板');
+                const successHint = document.getElementById('successHint');
+                successHint.textContent = '✅ 已复制到剪贴板';
+                successHint.style.display = 'inline';
+                setTimeout(() => {
+                    successHint.style.display = 'none';
+                }, 2000);
             }).catch(err => {
                 showError('复制失败: ' + err.message);
             });
@@ -632,8 +760,8 @@
                     <p>请在左侧输入 JSON数据<br>点击"解析 JSON"按钮查看结果</p>
                 </div>
             `;
-            document.getElementById('errorMessage').classList.remove('show');
-            document.getElementById('successHint').classList.remove('show');
+            document.getElementById('errorHint').style.display = 'none';
+            document.getElementById('successHint').style.display = 'none';
             collapsedNodes.clear();
         }
 
