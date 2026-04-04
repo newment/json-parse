@@ -222,6 +222,23 @@
             border-radius: 3px;
         }
 
+        .char-added {
+            background-color: #c8e6c9;
+            color: #2e7d32;
+            border-radius: 2px;
+        }
+
+        .char-removed {
+            background-color: #ffcdd2;
+            color: #c62828;
+            text-decoration: line-through;
+            border-radius: 2px;
+        }
+
+        .char-unchanged {
+            color: #333;
+        }
+
         .error-message {
             background: #fee;
             border: 1px solid #fcc;
@@ -395,6 +412,10 @@
 
             <div class="options-bar">
                 <label class="option-label">
+                    <input type="checkbox" id="charByChar">
+                    逐字对比
+                </label>
+                <label class="option-label">
                     <input type="checkbox" id="ignoreSpaces" checked>
                     忽略空格差异
                 </label>
@@ -402,7 +423,7 @@
                     <input type="checkbox" id="ignoreCase">
                     忽略大小写
                 </label>
-                <label class="option-label">
+                <label class="option-label" id="lineNumbersLabel">
                     <input type="checkbox" id="showLineNumbers" checked>
                     显示行号
                 </label>
@@ -439,7 +460,8 @@
                 output: document.getElementById('outputContainer').innerHTML,
                 ignoreSpaces: document.getElementById('ignoreSpaces').checked,
                 ignoreCase: document.getElementById('ignoreCase').checked,
-                showLineNumbers: document.getElementById('showLineNumbers').checked
+                showLineNumbers: document.getElementById('showLineNumbers').checked,
+                charByChar: document.getElementById('charByChar').checked
             };
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -457,6 +479,7 @@
                 document.getElementById('ignoreSpaces').checked = state.ignoreSpaces || false;
                 document.getElementById('ignoreCase').checked = state.ignoreCase || false;
                 document.getElementById('showLineNumbers').checked = state.showLineNumbers || true;
+                document.getElementById('charByChar').checked = state.charByChar || false;
 
                 if (state.output) {
                     document.getElementById('outputContainer').innerHTML = state.output;
@@ -527,6 +550,7 @@
             const ignoreSpaces = document.getElementById('ignoreSpaces').checked;
             const ignoreCase = document.getElementById('ignoreCase').checked;
             const showLineNumbers = document.getElementById('showLineNumbers').checked;
+            const charByChar = document.getElementById('charByChar').checked;
 
             const outputContainer = document.getElementById('outputContainer');
             const statsContainer = document.getElementById('statsContainer');
@@ -535,6 +559,87 @@
                 alert('请至少输入一段文本进行对比');
                 return;
             }
+
+            if (charByChar) {
+                compareCharByChar(originalText, modifiedText, ignoreCase);
+            } else {
+                compareLineByLine(originalText, modifiedText, ignoreSpaces, ignoreCase, showLineNumbers);
+            }
+            saveState();
+        }
+
+        function compareCharByChar(originalText, modifiedText, ignoreCase) {
+            const outputContainer = document.getElementById('outputContainer');
+            const statsContainer = document.getElementById('statsContainer');
+
+            let original = originalText.split('');
+            let modified = modifiedText.split('');
+
+            if (ignoreCase) {
+                original = original.map(c => c.toLowerCase());
+                modified = modified.map(c => c.toLowerCase());
+            }
+
+            const dp = computeLCS(original, modified);
+            const result = [];
+            let i = original.length, j = modified.length;
+
+            while (i > 0 || j > 0) {
+                if (i > 0 && j > 0 && original[i - 1] === modified[j - 1]) {
+                    result.unshift({ type: 'unchanged', char: originalText[i - 1] });
+                    i--;
+                    j--;
+                } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
+                    result.unshift({ type: 'added', char: modifiedText[j - 1] });
+                    j--;
+                } else if (i > 0) {
+                    result.unshift({ type: 'removed', char: originalText[i - 1] });
+                    i--;
+                }
+            }
+
+            comparisonStats = { added: 0, removed: 0, modified: 0, unchanged: 0 };
+
+            let html = '';
+            result.forEach(diff => {
+                if (diff.type === 'unchanged') {
+                    comparisonStats.unchanged++;
+                    html += `<span class="char-unchanged">${escapeHtml(diff.char)}</span>`;
+                } else if (diff.type === 'removed') {
+                    comparisonStats.removed++;
+                    html += `<span class="char-removed">${escapeHtml(diff.char)}</span>`;
+                } else if (diff.type === 'added') {
+                    comparisonStats.added++;
+                    html += `<span class="char-added">${escapeHtml(diff.char)}</span>`;
+                }
+            });
+
+            outputContainer.innerHTML = `<div style="white-space: pre-wrap; word-break: break-all;">${html || '<span style="color: #999;">两段文本完全相同</span>'}</div>`;
+
+            statsContainer.style.display = 'flex';
+            statsContainer.innerHTML = `
+                <div class="summary-item">
+                    <span class="summary-dot added"></span>
+                    <span>新增: <strong class="stat-added">${comparisonStats.added}</strong> 字符</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-dot removed"></span>
+                    <span>删除: <strong class="stat-removed">${comparisonStats.removed}</strong> 字符</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-dot unchanged"></span>
+                    <span>未变: <strong>${comparisonStats.unchanged}</strong> 字符</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-dot modified"></span>
+                    <span>总字符: <strong>${modifiedText.length}</strong></span>
+                </div>
+            `;
+        }
+
+        function compareLineByLine(originalText, modifiedText, ignoreSpaces, ignoreCase, showLineNumbers) {
+            const outputContainer = document.getElementById('outputContainer');
+            const statsContainer = document.getElementById('statsContainer');
 
             originalLines = originalText.split('\n');
             modifiedLines = modifiedText.split('\n');
@@ -597,7 +702,6 @@
                     <span>总行数: <strong>${modifiedLines.length}</strong></span>
                 </div>
             `;
-            saveState();
         }
 
         function swapTexts() {
@@ -675,6 +779,11 @@
         document.getElementById('ignoreSpaces').addEventListener('change', compareTexts);
         document.getElementById('ignoreCase').addEventListener('change', compareTexts);
         document.getElementById('showLineNumbers').addEventListener('change', compareTexts);
+        document.getElementById('charByChar').addEventListener('change', function() {
+            const lineNumbersLabel = document.getElementById('lineNumbersLabel');
+            lineNumbersLabel.style.display = this.checked ? 'none' : 'flex';
+            compareTexts();
+        });
     </script>
 </body>
 </html>
