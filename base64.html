@@ -419,20 +419,11 @@
 
     <script>
         const STORAGE_KEY = 'base64_state';
+        let currentImageDataUrl = '';
 
         function saveState() {
             const state = {
-                input: document.getElementById('base64Input').value,
-                output: document.getElementById('outputContainer').innerHTML,
-                currentImageDataUrl: window.currentImageDataUrl || '',
-                infoBarVisible: document.getElementById('infoBar').style.visibility === 'visible',
-                infoBarContent: document.getElementById('infoBar').innerHTML,
-                errorHintVisible: document.getElementById('errorHint').style.display === 'inline',
-                errorHintText: document.getElementById('errorHint').textContent,
-                successHintVisible: document.getElementById('successHint').style.display === 'inline',
-                successHintText: document.getElementById('successHint').textContent,
-                fileName: document.getElementById('fileName').textContent,
-                downloadBtnVisible: document.getElementById('downloadBtn').style.display === 'block'
+                input: document.getElementById('base64Input').value
             };
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -450,29 +441,8 @@
 
                 document.getElementById('base64Input').value = state.input || '';
 
-                if (state.currentImageDataUrl) {
-                    window.currentImageDataUrl = state.currentImageDataUrl;
-                    document.getElementById('outputContainer').innerHTML = state.output || '';
-                    document.getElementById('downloadBtn').style.display = state.downloadBtnVisible ? 'block' : 'none';
-                } else if (state.output) {
-                    document.getElementById('outputContainer').innerHTML = state.output;
-                }
-
-                document.getElementById('fileName').textContent = state.fileName || '';
-
-                if (state.infoBarVisible) {
-                    document.getElementById('infoBar').style.visibility = 'visible';
-                    document.getElementById('infoBar').innerHTML = state.infoBarContent;
-                }
-
-                if (state.errorHintVisible) {
-                    document.getElementById('errorHint').textContent = state.errorHintText;
-                    document.getElementById('errorHint').style.display = 'inline';
-                }
-
-                if (state.successHintVisible) {
-                    document.getElementById('successHint').textContent = state.successHintText;
-                    document.getElementById('successHint').style.display = 'inline';
+                if (state.input) {
+                    processBase64Input();
                 }
             } catch (e) {
                 // Ignore restore errors
@@ -534,6 +504,26 @@
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;')
                 .replace(/"/g, '&quot;');
+        }
+
+        function processBase64Input() {
+            const input = document.getElementById('base64Input').value.trim();
+            if (!input) return;
+
+            if (input.startsWith('data:image/')) {
+                decodeBase64();
+                return;
+            }
+
+            try {
+                if (/^[A-Za-z0-9+/]+=*$/.test(input) && input.length % 4 === 0) {
+                    try {
+                        decodeBase64();
+                        return;
+                    } catch (e) {}
+                }
+                encodeBase64();
+            } catch (e) {}
         }
 
         function encodeBase64() {
@@ -642,8 +632,6 @@
             updateOutput(binaryData, `Base64 解码（二进制数据，无法识别为图片）`);
             showSuccess('⚠️ 解码成功，但内容非文本且非已知图片格式');
         }
-
-        let currentImageDataUrl = '';
 
         function displayImage(dataUrl) {
             currentImageDataUrl = dataUrl;

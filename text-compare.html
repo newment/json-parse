@@ -457,7 +457,6 @@
             const state = {
                 originalText: document.getElementById('originalText').value,
                 modifiedText: document.getElementById('modifiedText').value,
-                output: document.getElementById('outputContainer').innerHTML,
                 ignoreSpaces: document.getElementById('ignoreSpaces').checked,
                 ignoreCase: document.getElementById('ignoreCase').checked,
                 showLineNumbers: document.getElementById('showLineNumbers').checked,
@@ -481,8 +480,8 @@
                 document.getElementById('showLineNumbers').checked = state.showLineNumbers || true;
                 document.getElementById('charByChar').checked = state.charByChar || false;
 
-                if (state.output) {
-                    document.getElementById('outputContainer').innerHTML = state.output;
+                if (state.originalText || state.modifiedText) {
+                    compareTexts();
                 }
             } catch (e) {}
         }
