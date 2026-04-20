@@ -362,7 +362,8 @@
             const state = {
                 msInput: document.getElementById('msInput').value,
                 sInput: document.getElementById('sInput').value,
-                datetimeInput: document.getElementById('datetimeInput').value
+                datetimeInput: document.getElementById('datetimeInput').value,
+                timestamp: Date.now()
             };
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -375,6 +376,11 @@
                 if (!saved) return;
 
                 const state = JSON.parse(saved);
+                // 12小时过期
+                if (!state.timestamp || Date.now() - state.timestamp > 12 * 60 * 60 * 1000) {
+                    localStorage.removeItem(STORAGE_KEY);
+                    return;
+                }
 
                 if (state.msInput !== undefined) {
                     document.getElementById('msInput').value = state.msInput;

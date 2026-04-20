@@ -423,7 +423,8 @@
 
         function saveState() {
             const state = {
-                input: document.getElementById('base64Input').value
+                input: document.getElementById('base64Input').value,
+                timestamp: Date.now()
             };
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -438,6 +439,11 @@
                 if (!saved) return;
 
                 const state = JSON.parse(saved);
+                // 12小时过期
+                if (!state.timestamp || Date.now() - state.timestamp > 12 * 60 * 60 * 1000) {
+                    localStorage.removeItem(STORAGE_KEY);
+                    return;
+                }
 
                 document.getElementById('base64Input').value = state.input || '';
 
@@ -515,15 +521,19 @@
                 return;
             }
 
-            try {
-                if (/^[A-Za-z0-9+/]+=*$/.test(input) && input.length % 4 === 0) {
-                    try {
-                        decodeBase64();
-                        return;
-                    } catch (e) {}
+            // Check if input is valid Base64 format before attempting decode
+            if (/^[A-Za-z0-9+/]+=*$/.test(input) && input.length % 4 === 0) {
+                // Validate that the string contains only valid Base64 characters
+                // by checking if atob succeeds without throwing
+                try {
+                    atob(input);
+                    decodeBase64();
+                    return;
+                } catch (e) {
+                    // Invalid Base64, fall through to encode
                 }
-                encodeBase64();
-            } catch (e) {}
+            }
+            encodeBase64();
         }
 
         function encodeBase64() {

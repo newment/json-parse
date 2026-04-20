@@ -460,7 +460,8 @@
                 ignoreSpaces: document.getElementById('ignoreSpaces').checked,
                 ignoreCase: document.getElementById('ignoreCase').checked,
                 showLineNumbers: document.getElementById('showLineNumbers').checked,
-                charByChar: document.getElementById('charByChar').checked
+                charByChar: document.getElementById('charByChar').checked,
+                timestamp: Date.now()
             };
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -473,6 +474,11 @@
                 if (!saved) return;
 
                 const state = JSON.parse(saved);
+                // 12小时过期
+                if (!state.timestamp || Date.now() - state.timestamp > 12 * 60 * 60 * 1000) {
+                    localStorage.removeItem(STORAGE_KEY);
+                    return;
+                }
                 document.getElementById('originalText').value = state.originalText || '';
                 document.getElementById('modifiedText').value = state.modifiedText || '';
                 document.getElementById('ignoreSpaces').checked = state.ignoreSpaces || false;

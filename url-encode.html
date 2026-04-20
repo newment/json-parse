@@ -414,7 +414,8 @@
         function saveState() {
             const state = {
                 input: document.getElementById('urlInput').value,
-                currentMode: currentMode
+                currentMode: currentMode,
+                timestamp: Date.now()
             };
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -427,6 +428,11 @@
                 if (!saved) return;
 
                 const state = JSON.parse(saved);
+                // 12小时过期
+                if (!state.timestamp || Date.now() - state.timestamp > 12 * 60 * 60 * 1000) {
+                    localStorage.removeItem(STORAGE_KEY);
+                    return;
+                }
                 document.getElementById('urlInput').value = state.input || '';
 
                 if (state.currentMode) {
